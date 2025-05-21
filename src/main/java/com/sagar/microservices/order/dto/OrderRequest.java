@@ -1,10 +1,12 @@
 package com.sagar.microservices.order.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
-public record OrderRequest(Long id,
-                           String orderNumber,
-                           String skuCode,
-                           BigDecimal price,
-                           Integer quantity) {
-}
+public record OrderRequest(
+        @JsonProperty("order_number") String orderNumber,
+        @JsonProperty("sku_code") String skuCode,
+        @JsonProperty("price") BigDecimal price,
+        @JsonProperty("quantity") Integer quantity
+) { }
