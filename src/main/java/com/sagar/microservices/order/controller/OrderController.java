@@ -1,10 +1,15 @@
 package com.sagar.microservices.order.controller;
 
-import com.sagar.microservices.order.dto.OrderRequest;
+import com.sagar.microservices.order.dto.OrderDto;
+import com.sagar.microservices.order.enums.ResponseCode;
+import com.sagar.microservices.order.response.ApiResponse;
+import com.sagar.microservices.order.response.OrderServiceResponse;
 import com.sagar.microservices.order.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("api/order")
@@ -21,13 +26,37 @@ public class OrderController {
      * Delegates the order placement to the OrderService and
      * returns a success message upon completion.
      *
-     * @param orderRequest the details of the order to be placed
+     * @param orderDto the details of the order to be placed
      * @return a confirmation indicating the order was placed successfully
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String createOrder(@RequestBody final OrderRequest orderRequest) {
-        orderService.placeOrder(orderRequest);
-        return "Order placed successfully.";
+    public ResponseEntity<ApiResponse> createOrder(
+            @RequestBody final OrderDto orderDto) {
+
+        var placedOrderDto = orderService.placeOrder(orderDto);
+        return OrderServiceResponse.build(
+                ResponseCode.ORDER_CREATED, placedOrderDto);
+    }
+
+    /**
+     * Retrieves all orders.
+     * @param page the page number for pagination
+     * @param size the size of elements on page
+     * @return a list of all orders
+     */
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Get all orders",
+            description = "This endpoint retrieves all orders."
+    )
+    public ResponseEntity<ApiResponse> getAllOrders(
+            @RequestParam(defaultValue = "0") final int page,
+            @RequestParam(defaultValue = "10") final int size) {
+
+        var allOrdersDto = orderService.getAllOrders(page, size);
+        return OrderServiceResponse.build(
+                ResponseCode.ORDER_RETRIEVED, allOrdersDto);
     }
 }

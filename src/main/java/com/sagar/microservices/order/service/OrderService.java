@@ -1,10 +1,15 @@
 package com.sagar.microservices.order.service;
 
-import com.sagar.microservices.order.dto.OrderRequest;
+import com.sagar.microservices.order.dto.OrderDto;
+import com.sagar.microservices.order.mapper.OrderMapper;
 import com.sagar.microservices.order.model.Order;
 import com.sagar.microservices.order.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,14 +18,20 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    @Transactional
-    public void placeOrder(OrderRequest orderRequest){
+    private final OrderMapper orderMapper;
 
-        Order order = new Order();
-        order.setOrderNumber(orderRequest.orderNumber());
-        order.setPrice(orderRequest.price());
-        order.setQuantity(orderRequest.quantity());
-        order.setSkuCode(orderRequest.skuCode());
-        orderRepository.save(order);
+    @Transactional
+    public OrderDto placeOrder(final OrderDto orderDto) {
+
+        var order = this.orderMapper.toOrder(orderDto);
+        this.orderRepository.save(order);
+        return this.orderMapper.toDto(order);
+    }
+
+    public Page<OrderDto> getAllOrders(final int page, final int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> productPage = this.orderRepository.findAll(pageable);
+        return productPage.map(orderMapper::toDto);
     }
 }
