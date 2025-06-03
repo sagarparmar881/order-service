@@ -2,6 +2,7 @@ package com.sagar.microservices.order.service;
 
 import com.sagar.microservices.order.client.InventoryClient;
 import com.sagar.microservices.order.dto.OrderDto;
+import com.sagar.microservices.order.exception.OrderServiceException;
 import com.sagar.microservices.order.mapper.OrderMapper;
 import com.sagar.microservices.order.model.Order;
 import com.sagar.microservices.order.repository.OrderRepository;
@@ -33,7 +34,7 @@ public class OrderService {
             this.orderRepository.save(order);
             return this.orderMapper.toDto(order);
         } else {
-            throw new RuntimeException("Product is not in stock");
+            throw new OrderServiceException(inventoryResponse.getMessage());
         }
     }
 
