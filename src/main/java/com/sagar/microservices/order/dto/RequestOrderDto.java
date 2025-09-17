@@ -5,9 +5,8 @@ import jakarta.validation.constraints.Null;
 
 import java.math.BigDecimal;
 
-public record OrderDto(
-        @JsonProperty("id") @Null Long id,
-        @JsonProperty("order_number") String orderNumber,
+public record RequestOrderDto(
+        @JsonProperty("order_number") @Null String orderNumber,
         @JsonProperty("sku_code") String skuCode,
         @JsonProperty("price") BigDecimal price,
         @JsonProperty("quantity") Integer quantity

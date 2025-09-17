@@ -1,10 +1,13 @@
 package com.sagar.microservices.order.mapper;
 
-import com.sagar.microservices.order.dto.OrderDto;
+import com.sagar.microservices.order.dto.RequestOrderDto;
+import com.sagar.microservices.order.dto.ResponseOrderDto;
 import com.sagar.microservices.order.model.Order;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import java.lang.annotation.Target;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
@@ -13,18 +16,18 @@ public interface OrderMapper {
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
     /**
-     * Converts a Order entity to a OrderDto.
+     * Converts a Order entity to a ResponseOrderDto.
      *
      * @param order The Order entity to be converted.
-     * @return The converted OrderDto.
+     * @return The converted ResponseOrderDto.
      */
-    OrderDto toDto(Order order);
+    ResponseOrderDto toDto(Order order);
 
     /**
-     * Converts a Order entity to a Order entity.
+     * Converts a RequestOrderDto entity to a Order entity.
      *
-     * @param orderDto The Order Dto to be converted.
+     * @param requestOrderDto The requestOrderDto Dto to be converted.
      * @return The converted order.
      */
-    Order toOrder(OrderDto orderDto);
+    Order toOrder(RequestOrderDto requestOrderDto);
 }

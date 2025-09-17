@@ -1,6 +1,6 @@
 package com.sagar.microservices.order.controller;
 
-import com.sagar.microservices.order.dto.OrderDto;
+import com.sagar.microservices.order.dto.RequestOrderDto;
 import com.sagar.microservices.order.enums.ResponseCode;
 import com.sagar.microservices.order.response.ApiResponse;
 import com.sagar.microservices.order.response.OrderServiceResponse;
@@ -26,15 +26,15 @@ public class OrderController {
      * Delegates the order placement to the OrderService and
      * returns a success message upon completion.
      *
-     * @param orderDto the details of the order to be placed
+     * @param requestOrderDto the details of the order to be placed
      * @return a confirmation indicating the order was placed successfully
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ApiResponse> createOrder(
-            @RequestBody final OrderDto orderDto) {
+            @RequestBody final RequestOrderDto requestOrderDto) {
 
-        var placedOrderDto = orderService.placeOrder(orderDto);
+        var placedOrderDto = orderService.placeOrder(requestOrderDto);
         return OrderServiceResponse.build(
                 ResponseCode.ORDER_CREATED, placedOrderDto);
     }
