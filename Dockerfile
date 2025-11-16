@@ -1,30 +1,19 @@
-# ============================
-# Stage 1 — Build the JAR
-# ============================
-FROM maven:3.9.6-eclipse-temurin-23 AS build
+# ---- Stage 1: Build ----
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy POM and download dependencies
 COPY pom.xml .
-RUN mvn -q dependency:go-offline
+RUN mvn -q -e -B dependency:go-offline
 
-# Copy the source and build the app
 COPY src ./src
-RUN mvn -q clean package -DskipTests
+RUN mvn -q -e -B clean package -DskipTests
 
-# ============================
-# Stage 2 — Run the application
-# ============================
-FROM eclipse-temurin:23-jdk-alpine
-
+# ---- Stage 2: Runtime ----
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Copy JAR from build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Render automatically sets PORT
 EXPOSE 8080
 
-ENV JAVA_OPTS=""
-
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
