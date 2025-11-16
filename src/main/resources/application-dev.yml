@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order-service
+
+  datasource:
+    url: jdbc:mysql://srv687.hstgr.io:3306/u529715207_XJPfqD3QYvW9
+    username: u529715207_xcOHONIwAX0O
+    password: laAL4SbAWGZs
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+server:
+  port: 8081
