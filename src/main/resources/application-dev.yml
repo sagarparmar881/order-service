@@ -3,9 +3,9 @@ spring:
     name: order-service
 
   datasource:
-    url: jdbc:mysql://srv687.hstgr.io:3306/u529715207_XJPfqD3QYvW9
-    username: u529715207_xcOHONIwAX0O
-    password: laAL4SbAWGZs
+    url: ${ORDER_SERVICE_DATABASE_URL}
+    username: ${ORDER_SERVICE_DATABASE_USERNAME}
+    password: ${ORDER_SERVICE_DATABASE_PASSWORD}
 
   jpa:
     hibernate:
