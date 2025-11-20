@@ -17,4 +17,4 @@ server:
 
 inventory:
   service:
-    url: https://order-service-hko9.onrender.com
+    url: https://inventory-service-1dmr.onrender.com
